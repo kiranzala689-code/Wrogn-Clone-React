@@ -24,6 +24,14 @@ function Home() {
       .catch((err) => console.log(err));
   }, []);
 
+  const uniqueCategories = state.filter(
+    (item, index, self) =>
+      index ===
+      self.findIndex(
+        (el) => el.category === item.category
+      )
+  );
+
   const nextSlide = () => {
     setCurrent((prev) => (prev + 1) % images.length);
   };
@@ -78,10 +86,10 @@ function Home() {
         </h2>
 
         <div className="row g-4">
-          {state.map((el) => (
+          {uniqueCategories.map((el) => (
             <div
               className="col-lg-3 col-md-4 col-sm-6"
-              key={el.id}
+              key={el.category}
             >
               <Link
                 to={`/${el.category}`}
