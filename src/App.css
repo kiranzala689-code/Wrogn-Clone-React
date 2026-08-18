@@ -36,3 +36,32 @@
     transform: rotate(360deg);
   }
 }
+.category-card{
+    transition: .4s;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.category-card:hover{
+    transform: translateY(-10px);
+    box-shadow:0 10px 25px rgba(0,0,0,.3)!important;
+}
+
+.category-card img{
+    transition:.4s;
+}
+
+.category-card:hover img{
+    transform:scale(1.08);
+}
+
+h2{
+    letter-spacing:2px;
+}
+
+/* images ke name ke liye */
+.product-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
