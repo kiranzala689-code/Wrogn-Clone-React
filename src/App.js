@@ -10,6 +10,7 @@ import Delivery from './Comp/Delivery';
 import Search from './Comp/Search';
 import Payment from './Comp/Payment';
 import Success from './Comp/Success';
+
 import Footer from './Comp/Footer';
 
 function App() {
