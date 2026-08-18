@@ -9,6 +9,7 @@ function Category() {
 
   const [data, setData] = useState([]);
   const [sort, setSort] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
 
@@ -16,46 +17,34 @@ function Category() {
 
   useEffect(() => {
 
-    if (category === "search") {
+    setLoading(true);
 
-      axios
-        .get("https://wrogn-clone-react-1.onrender.com")
-        .then((res) => {
+    axios
+      .get("https://wrogn-clone-react-1.onrender.com/data")
+      .then((res) => {
 
-          let allProducts = [];
+        if (category === "search") {
 
-          Object.keys(res.data).forEach((key) => {
-
-            if (key !== "data" && Array.isArray(res.data[key])) {
-
-              allProducts = [
-                ...allProducts,
-                ...res.data[key]
-              ];
-
-            }
-
-          });
-
-          setData(allProducts);
-
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-
-    } else {
-
-      axios
-        .get(`https://wrogn-clone-react-1.onrender.com/${category}`)
-        .then((res) => {
           setData(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
 
-    }
+        } else {
+
+          const result = res.data.filter(
+            (item) => item.category === category
+          );
+
+          setData(result);
+
+        }
+
+      })
+      .catch((err) => {
+        console.log(err);
+        setData([]);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
 
   }, [category]);
 
@@ -145,7 +134,30 @@ function Category() {
 
       <div className="row">
 
-        {sortedData.length === 0 ? (
+        {loading ? (
+
+          <div className="text-center py-5">
+
+            <div
+              className="spinner-border text-dark"
+              style={{
+                width: "3rem",
+                height: "3rem"
+              }}
+              role="status"
+            >
+              <span className="visually-hidden">
+                Loading...
+              </span>
+            </div>
+
+            <p className="mt-3 fw-semibold">
+              Loading products...
+            </p>
+
+          </div>
+
+        ) : sortedData.length === 0 ? (
 
           <div className="text-center py-5">
 
@@ -178,7 +190,7 @@ function Category() {
                     objectFit: "cover",
                     cursor: "pointer"
                   }}
-                  alt={item.name}
+                  alt={item.name || item.category}
                   onClick={() =>
                     navigate(`/${item.category}/${item.id}`)
                   }
