@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import WOW from "wowjs";
-import "animate.css";
 import SeasonTopPicks from "./SeasonToppicks";
 
 const images = [
@@ -18,13 +16,6 @@ function Home() {
   const [current, setCurrent] = useState(0);
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    new WOW.WOW({
-      live: true,
-      mobile: true
-    }).init();
-  }, []);
 
   useEffect(() => {
     axios
@@ -53,7 +44,7 @@ function Home() {
 
   return (
     <>
-      <div className="container-fluid position-relative wow fadeIn">
+      <div className="container-fluid position-relative">
         <img
           src={images[current]}
           alt="Banner"
@@ -82,20 +73,14 @@ function Home() {
       </div>
 
       <div className="container mt-5">
-
-        <h2 className="text-center fw-bold mb-5 wow fadeInUp">
+        <h2 className="text-center fw-bold mb-5">
           SHOP BY CATEGORY
         </h2>
 
         <div className="row g-4">
-
-          {state.map((el, index) => (
+          {state.map((el) => (
             <div
-              className={`col-lg-3 col-md-4 col-sm-6 wow ${
-                index % 2 === 0 ? "fadeInUp" : "fadeInDown"
-              }`}
-              data-wow-duration="1s"
-              data-wow-delay={`${index * 0.1}s`}
+              className="col-lg-3 col-md-4 col-sm-6"
               key={el.id}
             >
               <Link
@@ -103,7 +88,6 @@ function Home() {
                 className="text-decoration-none text-dark"
               >
                 <div className="card border-0 shadow category-card">
-
                   <img
                     src={el.img}
                     className="card-img-top"
@@ -115,7 +99,6 @@ function Home() {
                   />
 
                   <div className="card-body text-center">
-
                     <h5 className="fw-bold text-uppercase">
                       {el.category}
                     </h5>
@@ -126,55 +109,43 @@ function Home() {
                     >
                       SHOP NOW
                     </button>
-
                   </div>
-
                 </div>
               </Link>
             </div>
           ))}
 
-          <div
-            className="wow fadeInUp"
-            data-wow-duration="1.5s"
+          <video
+            className="w-100 mb-4"
+            autoPlay
+            muted
+            loop
+            controls
+            playsInline
+            style={{
+              height: "600px",
+              objectFit: "cover"
+            }}
           >
-            <video
-              className="w-100 mb-4"
-              autoPlay
-              muted
-              loop
-              controls
-              playsInline
-              style={{
-                height: "600px",
-                objectFit: "cover"
-              }}
-            >
-              <source
-                src="https://wrogn.com/cdn/shop/videos/c/vp/1aec96c21003479e8820ba118f08b7be/1aec96c21003479e8820ba118f08b7be.HD-720p-3.0Mbps-57504336.mp4?v=0"
-                type="video/mp4"
-              />
-            </video>
-          </div>
-
+            <source
+              src="https://wrogn.com/cdn/shop/videos/c/vp/1aec96c21003479e8820ba118f08b7be/1aec96c21003479e8820ba118f08b7be.HD-720p-3.0Mbps-57504336.mp4?v=0"
+              type="video/mp4"
+            />
+          </video>
         </div>
 
         <div className="container-fluid mt-4">
-
-          <div className="wow fadeInUp">
+          <div>
             <h3>TRENDING CATEGORIES</h3>
           </div>
 
           <div className="row g-1">
-
             <div
-              className="col-md-6 wow fadeInLeft"
-              data-wow-duration="1s"
+              className="col-md-6"
               onClick={() => navigate("/tshirt")}
               style={{ cursor: "pointer" }}
             >
               <div className="position-relative overflow-hidden">
-
                 <img
                   src="https://wrogn.com/cdn/shop/files/T-SHIRTS_copy._e2be4c54-1cd1-421d-bdbe-60ffbd6deefd.jpg?v=1774011417&width=720"
                   alt="T-Shirt"
@@ -184,18 +155,15 @@ function Home() {
                     objectFit: "cover"
                   }}
                 />
-
               </div>
             </div>
 
             <div
-              className="col-md-6 wow fadeInRight"
-              data-wow-duration="1s"
+              className="col-md-6"
               onClick={() => navigate("/shirt")}
               style={{ cursor: "pointer" }}
             >
               <div className="position-relative overflow-hidden">
-
                 <img
                   src="https://wrogn.com/cdn/shop/files/SHIRTS_copy..jpg?v=1774015803&width=720"
                   alt="Shirt"
@@ -205,22 +173,17 @@ function Home() {
                     objectFit: "cover"
                   }}
                 />
-
               </div>
             </div>
-
           </div>
 
           <div className="row pt-1 px-1 g-1">
-
             <div
-              className="col-md-4 wow fadeInUp"
-              data-wow-delay="0.1s"
+              className="col-md-4"
               onClick={() => navigate("/shoes")}
               style={{ cursor: "pointer" }}
             >
               <div className="position-relative overflow-hidden">
-
                 <img
                   src="https://wrogn.com/cdn/shop/files/FOOTWEAR_1_copy..jpg?v=1774016005&width=720"
                   alt="Shoes"
@@ -230,18 +193,15 @@ function Home() {
                     objectFit: "cover"
                   }}
                 />
-
               </div>
             </div>
 
             <div
-              className="col-md-4 wow fadeInUp"
-              data-wow-delay="0.2s"
+              className="col-md-4"
               onClick={() => navigate("/polo-shirt")}
               style={{ cursor: "pointer" }}
             >
               <div className="position-relative overflow-hidden">
-
                 <img
                   src="https://wrogn.com/cdn/shop/files/POLO_00cc7cbf-b0f7-4d1b-ac2e-0f3c897cd728.jpg?v=1774015943&width=720"
                   alt="Polos"
@@ -251,18 +211,15 @@ function Home() {
                     objectFit: "cover"
                   }}
                 />
-
               </div>
             </div>
 
             <div
-              className="col-md-4 wow fadeInUp"
-              data-wow-delay="0.3s"
+              className="col-md-4"
               onClick={() => navigate("/pent")}
               style={{ cursor: "pointer" }}
             >
               <div className="position-relative overflow-hidden">
-
                 <img
                   src="https://wrogn.com/cdn/shop/files/JEANS_copy..jpg?v=1774016034&width=720"
                   alt="Pants"
@@ -272,18 +229,12 @@ function Home() {
                     objectFit: "cover"
                   }}
                 />
-
               </div>
             </div>
-
           </div>
-
         </div>
 
-        <div className="wow fadeInUp">
-          <SeasonTopPicks />
-        </div>
-
+        <SeasonTopPicks />
       </div>
     </>
   );
