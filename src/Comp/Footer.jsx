@@ -16,13 +16,9 @@ function Footer() {
         padding: "70px 5% 20px"
       }}
     >
-
       <div className="container-fluid">
-
         <div className="row">
-
           <div className="col-lg-5 col-md-12 mb-5">
-
             <div
               className="fw-bold mb-3"
               style={{
@@ -60,104 +56,96 @@ function Footer() {
             </p>
 
             <div className="d-flex gap-4">
-
-              <a href="#" className="footer-icon">
+              <a
+                href="https://www.instagram.com/"
+                target="_blank"
+                rel="noreferrer"
+                className="footer-icon"
+              >
                 <i className="bi bi-instagram"></i>
               </a>
 
-              <a href="#" className="footer-icon">
+              <a
+                href="https://www.facebook.com/"
+                target="_blank"
+                rel="noreferrer"
+                className="footer-icon"
+              >
                 <i className="bi bi-facebook"></i>
               </a>
 
-              <a href="#" className="footer-icon">
+              <a
+                href="https://x.com/"
+                target="_blank"
+                rel="noreferrer"
+                className="footer-icon"
+              >
                 <i className="bi bi-twitter-x"></i>
               </a>
 
-              <a href="#" className="footer-icon">
+              <a
+                href="https://www.pinterest.com/"
+                target="_blank"
+                rel="noreferrer"
+                className="footer-icon"
+              >
                 <i className="bi bi-pinterest"></i>
               </a>
 
-              <a href="#" className="footer-icon">
+              <a
+                href="https://www.youtube.com/"
+                target="_blank"
+                rel="noreferrer"
+                className="footer-icon"
+              >
                 <i className="bi bi-youtube"></i>
               </a>
-
             </div>
-
           </div>
 
-
           <div className="col-lg-2 col-md-4 col-sm-6 mb-4">
-
             <h6 className="footer-heading">
               HELP
             </h6>
 
             <ul className="list-unstyled footer-list">
-
               <li>My Account</li>
-
               <li>Privacy Policy</li>
-
               <li>Anti Corruption Policy</li>
-
               <li>Whistle Blower Policy</li>
-
               <li>Terms & Conditions</li>
-
               <li>Contact Us</li>
-
             </ul>
-
           </div>
 
-
           <div className="col-lg-3 col-md-4 col-sm-6 mb-4">
-
             <h6 className="footer-heading">
               ORDER SUPPORT
             </h6>
 
             <ul className="list-unstyled footer-list">
-
               <li>Track Return And Exchange</li>
-
               <li>Return & Refund Policy</li>
-
               <li>FAQ</li>
-
               <li>Shipping Policy</li>
-
               <li>Cancellation</li>
-
             </ul>
-
           </div>
 
-
-          <div className="col-lg-2 col-md-4  col-sm-6 mb-4">
-
+          <div className="col-lg-2 col-md-4 col-sm-6 mb-4">
             <h6 className="footer-heading">
               ABOUT US
             </h6>
 
             <ul className="list-unstyled footer-list">
-
               <li>About Us</li>
-
               <li>Find a Store</li>
-
               <li>Blog</li>
-
               <li>Careers</li>
-
             </ul>
-
           </div>
-
         </div>
-
       </div>
-
 
       <button
         onClick={scrollTop}
@@ -169,9 +157,8 @@ function Footer() {
       >
         <i className="bi bi-chevron-up"></i>
       </button>
-
     </footer>
   );
 }
 
-export default Footer;  
+export default Footer;

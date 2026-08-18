@@ -1,6 +1,6 @@
 import './App.css';
 import { Route, Routes } from 'react-router-dom'
-import style from './Comp/home.css'
+
 import Home from './Comp/Home'
 import Category from './Comp/Category'
 import ProductDetail from './Comp/ProductDetail'
@@ -10,7 +10,6 @@ import Delivery from './Comp/Delivery';
 import Search from './Comp/Search';
 import Payment from './Comp/Payment';
 import Success from './Comp/Success';
-import SeasonTopPicks from './Comp/SeasonToppicks';
 import Footer from './Comp/Footer';
 
 function App() {
