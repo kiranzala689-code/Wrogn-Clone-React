@@ -7,7 +7,7 @@ import { myAction } from "./redux/Action";
 function ProductDetail() {
 
   const [state, setState] = useState({});
-  const [selectedImage, setSelectedImage] = useState("");
+  const [, setSelectedImage] = useState("");
   const [similarProducts, setSimilarProducts] = useState([]);
 
   const { category, id } = useParams();

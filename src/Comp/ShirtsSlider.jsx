@@ -86,6 +86,7 @@ function ShirtSlider() {
 
                     <img
                       src={item.img}
+                      alt="Shirt"
                       className="card-img-top"
                       style={{
                         height: "300px",
