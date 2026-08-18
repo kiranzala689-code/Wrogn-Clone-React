@@ -19,7 +19,7 @@ function Home() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8015/data")
+      .get("https://wrogn-clone-react-1.onrender.com/data")
       .then((res) => setState(res.data))
       .catch((err) => console.log(err));
   }, []);

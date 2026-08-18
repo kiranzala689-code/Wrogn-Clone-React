@@ -35,7 +35,7 @@ function Search() {
       try {
 
         const requests = categories.map((category) =>
-          axios.get(`http://localhost:8015/${category}`)
+          axios.get(`https://wrogn-clone-react-1.onrender.com/${category}`)
         );
 
         const responses = await Promise.all(requests);

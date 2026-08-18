@@ -27,7 +27,7 @@ function ProductDetail() {
       try {
 
         const response = await axios.get(
-          `http://localhost:8015/${category}/${id}`
+          `https://wrogn-clone-react-1.onrender.com/${category}/${id}`
         );
 
         setState(response.data);
@@ -45,7 +45,7 @@ function ProductDetail() {
     async function fetchSimilarProducts() {
       try {
         const response = await axios.get(
-          `http://localhost:8015/${category}`
+          `https://wrogn-clone-react-1.onrender.com/${category}`
         );
         const products = response.data;
         const similar = products.filter(

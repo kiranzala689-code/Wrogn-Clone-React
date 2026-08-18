@@ -103,9 +103,9 @@ function Cart() {
                                             />
                                         </div>
 
-                                        <div className="col-md-8">
+                     <div className="col-md-8">
 
-                                            <div className="card-body h-100 d-flex flex-column justify-content-between p-4">
+                                 <div className="card-body h-100 d-flex flex-column justify-content-between p-4">
 
                                                 <div>
 

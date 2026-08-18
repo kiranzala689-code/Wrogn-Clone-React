@@ -11,7 +11,7 @@ function Shirts() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8015/${category}`)
+      .get(`https://wrogn-clone-react-1.onrender.com/${category}`)
       .then((res) => {
         setProducts(res.data);
       })

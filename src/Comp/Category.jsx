@@ -19,7 +19,7 @@ function Category() {
     if (category === "search") {
 
       axios
-        .get("http://localhost:8015")
+        .get("https://wrogn-clone-react-1.onrender.com")
         .then((res) => {
 
           let allProducts = [];

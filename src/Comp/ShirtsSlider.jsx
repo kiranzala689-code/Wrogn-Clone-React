@@ -11,7 +11,7 @@ function ShirtSlider() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8015/shirt")
+      .get("https://wrogn-clone-react-1.onrender.com/shirt")
       .then((res) => {
         setProducts(res.data);
       })

@@ -12,7 +12,7 @@ function SeasonTopPicks() {
   useEffect(() => {
 
     axios
-      .get("http://localhost:8015/pent")
+      .get("https://wrogn-clone-react-1.onrender.com/pent")
       .then((res) => {
         setProducts(res.data.slice(0, 4));
       })
