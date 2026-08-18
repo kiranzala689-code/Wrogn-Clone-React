@@ -9,15 +9,12 @@ function Category() {
 
   const [data, setData] = useState([]);
   const [sort, setSort] = useState("");
-  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
 
   const search = searchParams.get("search") || "";
 
   useEffect(() => {
-
-    setLoading(true);
 
     axios
       .get("https://wrogn-clone-react-1.onrender.com/data")
@@ -40,10 +37,6 @@ function Category() {
       })
       .catch((err) => {
         console.log(err);
-        setData([]);
-      })
-      .finally(() => {
-        setLoading(false);
       });
 
   }, [category]);
@@ -134,30 +127,7 @@ function Category() {
 
       <div className="row">
 
-        {loading ? (
-
-          <div className="text-center py-5">
-
-            <div
-              className="spinner-border text-dark"
-              style={{
-                width: "3rem",
-                height: "3rem"
-              }}
-              role="status"
-            >
-              <span className="visually-hidden">
-                Loading...
-              </span>
-            </div>
-
-            <p className="mt-3 fw-semibold">
-              Loading products...
-            </p>
-
-          </div>
-
-        ) : sortedData.length === 0 ? (
+        {sortedData.length === 0 ? (
 
           <div className="text-center py-5">
 
