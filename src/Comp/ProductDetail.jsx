@@ -1,10 +1,9 @@
-
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { myAction } from "./redux/Action";
-
+import "../Comp/ProductDetail.css"
 function ProductDetail() {
   const [state, setState] = useState({});
   const [, setSelectedImage] = useState("");
@@ -125,8 +124,7 @@ function ProductDetail() {
 
           <div className="col-lg-7">
 
-            <div className="row g-3">
-
+            <div className="row g-3 desktop-images">
               {images.map((image, index) => (
                 <div
                   className="col-6"
@@ -143,14 +141,51 @@ function ProductDetail() {
                         objectFit: "cover",
                         cursor: "pointer"
                       }}
-                      onClick={() =>
-                        setSelectedImage(image)
-                      }
                     />
 
                   </div>
                 </div>
               ))}
+            </div>
+
+            <div className="mobile-image-slider">
+
+              <div
+                className="mobile-image-track"
+                onScroll={(e) => {
+                  const width = e.currentTarget.clientWidth;
+                  const index = Math.round(
+                    e.currentTarget.scrollLeft / width
+                  );
+
+                  if (images[index]) {
+                    setSelectedImage(images[index]);
+                  }
+                }}
+              >
+
+                {images.map((image, index) => (
+                  <div
+                    className="mobile-slide"
+                    key={index}
+                  >
+                    <img
+                      src={image}
+                      alt={state.name || "WROGN Product"}
+                    />
+                  </div>
+                ))}
+
+              </div>
+
+              <div className="mobile-slider-dots">
+                {images.map((_, index) => (
+                  <span
+                    key={index}
+                    className="slider-dot"
+                  ></span>
+                ))}
+              </div>
 
             </div>
 
