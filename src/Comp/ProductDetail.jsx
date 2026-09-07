@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -5,138 +6,202 @@ import { useDispatch } from "react-redux";
 import { myAction } from "./redux/Action";
 
 function ProductDetail() {
-
   const [state, setState] = useState({});
-  const [, setSelectedImage] = useState("");
+  const [selectedImage, setSelectedImage] = useState("");
   const [similarProducts, setSimilarProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const { category, id } = useParams();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [category, id]);
 
   useEffect(() => {
-  window.scrollTo(0, 0);
-}, [category, id])
-
-  useEffect(() => {
-
-    async function fetchData() {
-
+    async function fetchProduct() {
       try {
+        setLoading(true);
 
         const response = await axios.get(
           `https://wrogn-clone-react-1.onrender.com/${category}/${id}`
         );
 
         setState(response.data);
-        setSelectedImage(response.data.img);
-
+        setSelectedImage(response.data.img || "");
       } catch (error) {
+        console.log("Product Error:", error);
+        setState({});
+      } finally {
+        setLoading(false);
+      }
+    }
 
-        console.log("Error:", error);
-
-      }  }
-
-   fetchData();
+    fetchProduct();
   }, [category, id]);
+
   useEffect(() => {
     async function fetchSimilarProducts() {
       try {
         const response = await axios.get(
           `https://wrogn-clone-react-1.onrender.com/${category}`
         );
-        const products = response.data;
+
+        const products = Array.isArray(response.data)
+          ? response.data
+          : [];
+
         const similar = products.filter(
-          item => item.id !== Number(id)
+          (item) => String(item.id) !== String(id)
         );
+
         setSimilarProducts(similar);
       } catch (error) {
         console.log("Similar Product Error:", error);
+        setSimilarProducts([]);
       }
     }
+
     fetchSimilarProducts();
   }, [category, id]);
+
   function addtocart() {
     dispatch(myAction(state));
-
     navigate("/cart");
-
   }
+
   function buyNow() {
-   navigate("/delivery", {
+    navigate("/delivery", {
       state: {
         product: state
       }
     });
-
   }
+
   const images = [
     state.img,
     state.img1,
     state.img2,
     state.img3
   ].filter(Boolean);
+
+  if (loading) {
+    return (
+      <div className="container py-5 text-center">
+        <div className="spinner-border" role="status">
+          <span className="visually-hidden">
+            Loading...
+          </span>
+        </div>
+      </div>
+    );
+  }
+
+  if (!state.id) {
+    return (
+      <div className="container py-5 text-center">
+        <h2 className="fw-bold">
+          Product Not Found
+        </h2>
+
+        <button
+          className="btn btn-dark mt-3"
+          onClick={() => navigate(`/${category}`)}
+        >
+          BACK TO CATEGORY
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="container-fluid bg-white py-5">
+
       <div className="container">
+
         <div className="row g-4">
 
-         <div className="col-lg-7">
+          <div className="col-lg-7">
 
             <div className="row g-3">
 
               {images.map((image, index) => (
-
                 <div
                   className="col-6"
-                  key={index}   >
-        <div className="overflow-hidden">
-                  <img
+                  key={index}
+                >
+                  <div className="overflow-hidden">
+
+                    <img
                       src={image}
-                      alt={state.name}
+                      alt={state.name || "WROGN Product"}
                       className="img-fluid w-100"
                       style={{
                         height: "500px",
                         objectFit: "cover",
                         cursor: "pointer"
                       }}
-                      onClick={() => setSelectedImage(image)}
-                   />
-                    </div>
-               </div>
+                      onClick={() =>
+                        setSelectedImage(image)
+                      }
+                    />
+
+                  </div>
+                </div>
               ))}
+
             </div>
+
           </div>
+
           <div className="col-lg-5">
+
             <div
               className="sticky-top"
-              style={{ top: "100px" }}   >
+              style={{ top: "100px" }}
+            >
+
               <p className="fw-bold mb-2">
                 WROGN
               </p>
+
               <h4 className="fw-bold text-secondary text-uppercase mb-3">
                 {state.name}
               </h4>
-        <div className="d-flex align-items-center mb-3">
-    <span className="badge bg-dark me-2">
-                {state.rating}</span>
- <small className="text-secondary">
-                  120+ Ratings </small> </div>
-                   <hr />
-          <div className="mb-3">
+
+              <div className="d-flex align-items-center mb-3">
+
+                {state.rating && (
+                  <span className="badge bg-dark me-2">
+                    {state.rating} ★
+                  </span>
+                )}
+
+                <small className="text-secondary">
+                  120+ Ratings
+                </small>
+
+              </div>
+
+              <hr />
+
+              <div className="mb-3">
 
                 <h3 className="fw-bold mb-1">
                   ₹{state.price}
                 </h3>
+
                 <span className="text-secondary">
                   MRP incl. of all taxes
                 </span>
 
               </div>
-     <div className="border rounded p-3 mb-4">
-              <h6 className="fw-bold text-success">
+
+              <div className="border rounded p-3 mb-4">
+
+                <h6 className="fw-bold text-success">
                   BEST PRICE
                 </h6>
 
@@ -158,7 +223,6 @@ function ProductDetail() {
 
               </div>
 
-
               <div className="mb-4">
 
                 <div className="d-flex justify-content-between">
@@ -173,8 +237,7 @@ function ProductDetail() {
 
                 </div>
 
-
-                <div className="d-flex gap-2 mt-2">
+                <div className="d-flex gap-2 mt-2 flex-wrap">
 
                   <button className="btn btn-outline-dark px-4">
                     S
@@ -214,7 +277,6 @@ function ProductDetail() {
                 BUY NOW
               </button>
 
-
               <div className="border-top mt-4 pt-4">
 
                 <h6 className="fw-bold">
@@ -241,7 +303,6 @@ function ProductDetail() {
 
               </div>
 
-
               <div className="border-top mt-4 pt-4">
 
                 <h6 className="fw-bold">
@@ -266,7 +327,6 @@ function ProductDetail() {
           <h2 className="fw-bold text-uppercase mb-4">
             Similar Products
           </h2>
-
 
           <div className="row">
 
@@ -298,6 +358,7 @@ function ProductDetail() {
                     <h6 className="fw-bold">
                       {item.name}
                     </h6>
+
                     <h5 className="fw-bold">
                       ₹{item.price}
                     </h5>
@@ -305,6 +366,7 @@ function ProductDetail() {
                     <small className="text-success fw-semibold">
                       Best Price
                     </small>
+
                     <button
                       className="btn btn-dark w-100 mt-3"
                       onClick={() =>
@@ -329,7 +391,6 @@ function ProductDetail() {
       </div>
 
     </div>
-
   );
 }
 

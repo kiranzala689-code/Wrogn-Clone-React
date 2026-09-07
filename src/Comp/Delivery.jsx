@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 function Delivery() {
-
   const location = useLocation();
   const navigate = useNavigate();
 
-  const product = location.state?.product;
+  const products = location.state?.products || [];
+  const cartTotal = location.state?.total || 0;
 
   const [form, setForm] = useState({
     name: "",
@@ -17,86 +17,74 @@ function Delivery() {
     state: ""
   });
 
-
   const handleChange = (e) => {
-
     setForm({
       ...form,
       [e.target.name]: e.target.value
     });
-
   };
 
-
   const continueToPayment = (e) => {
-
     e.preventDefault();
 
     if (
-      form.name === "" ||
-      form.mobile === "" ||
-      form.pincode === "" ||
-      form.address === "" ||
-      form.city === "" ||
-      form.state === ""
+      form.name.trim() === "" ||
+      form.mobile.trim() === "" ||
+      form.pincode.trim() === "" ||
+      form.address.trim() === "" ||
+      form.city.trim() === "" ||
+      form.state.trim() === ""
     ) {
-
       alert("Please fill all delivery details");
       return;
-
     }
 
-
     navigate("/payment", {
-
       state: {
-
-        products: [
-          {
-            ...product,
-            quantity: 1
-          }
-        ],
-
+        products: products,
+        total: cartTotal,
         delivery: form
-
       }
-
     });
-
   };
 
-
-  if (!product) {
-
+  if (!products || products.length === 0) {
     return (
-
       <div className="container py-5 text-center">
-
         <h3 className="fw-bold">
-          No Product Selected
+          No Products Selected
         </h3>
 
+        <p className="text-secondary">
+          Please add products to your cart first.
+        </p>
+
         <button
-          className="btn btn-dark mt-3"
+          className="btn btn-dark mt-3 px-4 py-2"
           onClick={() => navigate("/")}
         >
           GO TO HOME
         </button>
-
       </div>
-
     );
-
   }
 
+  const totalItems = products.reduce(
+    (total, item) => total + (item.quantity || 1),
+    0
+  );
+
+  const calculatedTotal = products.reduce(
+    (total, item) =>
+      total + Number(item.price) * (item.quantity || 1),
+    0
+  );
+
+  const finalTotal = cartTotal || calculatedTotal;
 
   return (
-
     <div className="container py-5">
-
       <div className="row g-4">
-
 
         <div className="col-lg-7">
 
@@ -104,9 +92,7 @@ function Delivery() {
             DELIVERY DETAILS
           </h2>
 
-
           <div className="card border-0 shadow-sm">
-
             <div className="card-body p-4">
 
               <form onSubmit={continueToPayment}>
@@ -114,7 +100,6 @@ function Delivery() {
                 <div className="row">
 
                   <div className="col-md-6 mb-3">
-
                     <label className="form-label fw-semibold">
                       Full Name
                     </label>
@@ -127,12 +112,9 @@ function Delivery() {
                       value={form.name}
                       onChange={handleChange}
                     />
-
                   </div>
 
-
                   <div className="col-md-6 mb-3">
-
                     <label className="form-label fw-semibold">
                       Mobile Number
                     </label>
@@ -145,12 +127,9 @@ function Delivery() {
                       value={form.mobile}
                       onChange={handleChange}
                     />
-
                   </div>
 
-
                   <div className="col-md-6 mb-3">
-
                     <label className="form-label fw-semibold">
                       Pincode
                     </label>
@@ -163,12 +142,9 @@ function Delivery() {
                       value={form.pincode}
                       onChange={handleChange}
                     />
-
                   </div>
 
-
                   <div className="col-md-6 mb-3">
-
                     <label className="form-label fw-semibold">
                       City
                     </label>
@@ -181,12 +157,9 @@ function Delivery() {
                       value={form.city}
                       onChange={handleChange}
                     />
-
                   </div>
 
-
                   <div className="col-12 mb-3">
-
                     <label className="form-label fw-semibold">
                       State
                     </label>
@@ -199,12 +172,9 @@ function Delivery() {
                       value={form.state}
                       onChange={handleChange}
                     />
-
                   </div>
 
-
                   <div className="col-12 mb-4">
-
                     <label className="form-label fw-semibold">
                       Complete Address
                     </label>
@@ -217,36 +187,32 @@ function Delivery() {
                       value={form.address}
                       onChange={handleChange}
                     ></textarea>
-
                   </div>
 
                 </div>
-
 
                 <button
                   type="submit"
                   className="btn btn-dark w-100 py-3 fw-bold"
                 >
                   CONTINUE TO PAYMENT
+                  <i className="bi bi-arrow-right ms-2"></i>
                 </button>
-
 
                 <button
                   type="button"
                   className="btn btn-outline-dark w-100 py-3 mt-2"
-                  onClick={() => navigate(-1)}
+                  onClick={() => navigate("/cart")}
                 >
-                  BACK
+                  BACK TO CART
                 </button>
 
               </form>
 
             </div>
-
           </div>
 
         </div>
-
 
         <div className="col-lg-5">
 
@@ -261,62 +227,73 @@ function Delivery() {
                 ORDER SUMMARY
               </h4>
 
+              <div className="delivery-products">
 
-              <div className="d-flex gap-3 mb-4">
+                {products.map((item, index) => (
+                  <div
+                    key={`${item.id}-${index}`}
+                    className="d-flex gap-3 mb-4 pb-3 border-bottom"
+                  >
 
-                <img
-                  src={product.img}
-                  alt={product.name}
-                  style={{
-                    width: "120px",
-                    height: "150px",
-                    objectFit: "cover"
-                  }}
-                  className="rounded"
-                />
+                    <img
+                      src={item.img}
+                      alt={item.name}
+                      style={{
+                        width: "90px",
+                        height: "115px",
+                        objectFit: "cover"
+                      }}
+                      className="rounded"
+                    />
 
+                    <div className="flex-grow-1">
 
-                <div>
+                      <h6 className="fw-bold mb-1">
+                        {item.name}
+                      </h6>
 
-                  <h6 className="fw-bold">
-                    {product.name}
-                  </h6>
+                      <p className="text-secondary text-uppercase small mb-1">
+                        {item.category}
+                      </p>
 
-                  <p className="text-secondary text-uppercase small">
-                    {product.category}
-                  </p>
+                      <p className="small mb-1">
+                        Quantity: {item.quantity || 1}
+                      </p>
 
-                  <h5 className="fw-bold">
-                    ₹{product.price}
-                  </h5>
+                      <h6 className="fw-bold mb-0">
+                        ₹
+                        {Number(item.price) *
+                          (item.quantity || 1)}
+                      </h6>
 
-                  <p className="mb-0">
-                    Quantity: 1
-                  </p>
+                    </div>
 
-                </div>
+                  </div>
+                ))}
 
               </div>
 
+              <div className="d-flex justify-content-between mb-2">
+                <span>
+                  TOTAL ITEMS
+                </span>
 
-              <hr />
-
+                <span className="fw-semibold">
+                  {totalItems}
+                </span>
+              </div>
 
               <div className="d-flex justify-content-between mb-2">
-
                 <span>
                   Product Price
                 </span>
 
                 <span>
-                  ₹{product.price}
+                  ₹{finalTotal}
                 </span>
-
               </div>
 
-
               <div className="d-flex justify-content-between mb-2">
-
                 <span>
                   Delivery
                 </span>
@@ -324,35 +301,27 @@ function Delivery() {
                 <span className="text-success fw-semibold">
                   FREE
                 </span>
-
               </div>
-
 
               <hr />
 
-
               <div className="d-flex justify-content-between">
-
                 <h5 className="fw-bold">
                   TOTAL
                 </h5>
 
                 <h5 className="fw-bold">
-                  ₹{product.price}
+                  ₹{finalTotal}
                 </h5>
-
               </div>
 
             </div>
-
           </div>
 
         </div>
 
       </div>
-
     </div>
-
   );
 }
 

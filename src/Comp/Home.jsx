@@ -1,7 +1,10 @@
+
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import SeasonTopPicks from "./SeasonToppicks";
+
+const API_URL = "https://wrogn-clone-react-1.onrender.com";
 
 const images = [
   "https://wrogn.com/cdn/shop/files/WEBSITE-BANNER_c80a47d2-f499-423c-b65f-4edc8127e43b.jpg?v=1778529168",
@@ -11,28 +14,137 @@ const images = [
   "https://wrogn.com/cdn/shop/files/WEBSITE-BANNER-shirts_fe897867-25f1-4fae-9cc4-224fd000b2e9.jpg?v=1781179123"
 ];
 
+const categories = [
+  {
+    title: "SHIRTS",
+    api: "shirt"
+  },
+  {
+    title: "T-SHIRTS",
+    api: "tshirt"
+  },
+  {
+    title: "SHOES",
+    api: "shoes"
+  },
+  {
+    title: "POLO SHIRTS",
+    api: "polo-shirt"
+  },
+  {
+    title: "PANTS",
+    api: "pent"
+  },
+  {
+    title: "CARGO",
+    api: "cargo"
+  },
+  {
+    title: "WATCHES",
+    api: "watch"
+  },
+  {
+    title: "JACKETS",
+    api: "jacket"
+  }
+];
+
+const trendingCategories = [
+  {
+    title: "T-SHIRTS",
+    category: "tshirt",
+    image:
+      "https://wrogn.com/cdn/shop/files/T-SHIRTS_copy._e2be4c54-1cd1-421d-bdbe-60ffbd6deefd.jpg?v=1774011417&width=720"
+  },
+  {
+    title: "SHIRTS",
+    category: "shirt",
+    image:
+      "https://wrogn.com/cdn/shop/files/SHIRTS_copy..jpg?v=1774015803&width=720"
+  },
+  {
+    title: "SHOES",
+    category: "shoes",
+    image:
+      "https://wrogn.com/cdn/shop/files/FOOTWEAR_1_copy..jpg?v=1774016005&width=720"
+  },
+  {
+    title: "POLO",
+    category: "polo-shirt",
+    image:
+      "https://wrogn.com/cdn/shop/files/POLO_00cc7cbf-b0f7-4d1b-ac2e-0f3c897cd728.jpg?v=1774015943&width=720"
+  },
+  {
+    title: "PANTS",
+    category: "pent",
+    image:
+      "https://wrogn.com/cdn/shop/files/JEANS_copy..jpg?v=1774016034&width=720"
+  }
+];
+
 function Home() {
-  const [state, setState] = useState([]);
+  const [categoryProducts, setCategoryProducts] = useState({});
   const [current, setCurrent] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios
-      .get("https://wrogn-clone-react-1.onrender.com/data")
-      .then((res) => {
-        setState(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    const fetchCategoryProducts = async () => {
+      try {
+        setLoading(true);
+
+        const results = await Promise.all(
+          categories.map(async (category) => {
+            try {
+              const response = await axios.get(
+                `${API_URL}/${category.api}`
+              );
+
+              return {
+                api: category.api,
+                products: Array.isArray(response.data)
+                  ? response.data
+                  : []
+              };
+            } catch (error) {
+              console.log(
+                `${category.api} API error`,
+                error
+              );
+
+              return {
+                api: category.api,
+                products: []
+              };
+            }
+          })
+        );
+
+        const productData = {};
+
+        results.forEach((result) => {
+          productData[result.api] = result.products;
+        });
+
+        setCategoryProducts(productData);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategoryProducts();
   }, []);
 
-  const categories = [
-    ...new Set(
-      state.map((item) => item.category)
-    )
-  ];
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrent(
+        (prev) => (prev + 1) % images.length
+      );
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const nextSlide = () => {
     setCurrent(
@@ -41,41 +153,35 @@ function Home() {
   };
 
   const prevSlide = () => {
-    setCurrent(
-      (prev) =>
-        prev === 0
-          ? images.length - 1
-          : prev - 1
+    setCurrent((prev) =>
+      prev === 0
+        ? images.length - 1
+        : prev - 1
     );
   };
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrent(
-        (prev) => (prev + 1) % images.length
-      );
-    }, 3000);
+  const goToCategory = (category) => {
+    navigate(`/${category}`);
+  };
 
-    return () => clearInterval(interval);
-  }, []);
+  const goToProduct = (category, id) => {
+    navigate(`/${category}/${id}`);
+  };
 
   return (
-    <>
-      <div className="container-fluid position-relative">
+    <main className="home-page">
+
+      <section className="home-banner">
 
         <img
           src={images[current]}
-          alt="Banner"
-          className="w-100"
-          style={{
-            height: "500px",
-            objectFit: "cover"
-          }}
+          alt="WROGN Banner"
+          className="home-banner-image"
         />
 
         <button
           type="button"
-          className="btn btn-dark position-absolute top-50 start-0 translate-middle-y ms-3"
+          className="banner-arrow banner-arrow-left"
           onClick={prevSlide}
         >
           ❮
@@ -83,119 +189,149 @@ function Home() {
 
         <button
           type="button"
-          className="btn btn-dark position-absolute top-50 end-0 translate-middle-y me-3"
+          className="banner-arrow banner-arrow-right"
           onClick={nextSlide}
         >
           ❯
         </button>
 
-      </div>
+        <div className="banner-dots">
+          {images.map((_, index) => (
+            <button
+              key={index}
+              type="button"
+              className={
+                current === index
+                  ? "banner-dot active"
+                  : "banner-dot"
+              }
+              onClick={() =>
+                setCurrent(index)
+              }
+            />
+          ))}
+        </div>
 
-      <div className="container mt-5">
+      </section>
 
-        <h2 className="text-center fw-bold mb-5">
-          SHOP BY CATEGORY
-        </h2>
 
-        {categories.map((category) => {
+      <section className="shop-category-section">
 
-          const categoryProducts =
-            state.filter(
-              (item) =>
-                item.category === category
-            );
+        <div className="section-heading">
+          <h2>SHOP BY CATEGORY</h2>
+        </div>
 
-          return (
-            <div
-              key={category}
-              className="mb-5"
-            >
+        {loading ? (
+          <div className="home-loading">
+            <div className="home-spinner"></div>
+            <p>Loading products...</p>
+          </div>
+        ) : (
 
-              <div className="d-flex justify-content-between align-items-center mb-4">
+          categories.map((category) => {
 
-                <h3 className="fw-bold text-uppercase mb-0">
-                  {category}
-                </h3>
+            const products =
+              categoryProducts[category.api] || [];
 
-                <button
-                  type="button"
-                  className="btn btn-dark"
-                  onClick={() =>
-                    navigate(`/${category}`)
-                  }
-                >
-                  VIEW ALL
-                </button>
+            if (products.length === 0) {
+              return null;
+            }
 
-              </div>
+            return (
+              <div
+                className="home-category-block"
+                key={category.api}
+              >
 
-              <div className="row g-4">
+                <div className="category-heading">
 
-                {categoryProducts.map(
-                  (el) => (
+                  <h3>
+                    {category.title}
+                  </h3>
 
-                    <div
-                      className="col-lg-3 col-md-4 col-sm-6"
-                      key={`${el.category}-${el.id}`}
-                    >
+                  <button
+                    type="button"
+                    onClick={() =>
+                      goToCategory(category.api)
+                    }
+                  >
+                    VIEW ALL
+                  </button>
 
-                      <div
-                        className="card border-0 shadow h-100"
-                        style={{
-                          cursor: "pointer"
-                        }}
+                </div>
+
+
+                <div className="home-product-grid">
+
+                  {products.slice(0, 4).map(
+                    (item, index) => (
+
+                      <article
+                        className="home-product-card"
+                        key={`${category.api}-${item.id}-${index}`}
                         onClick={() =>
-                          navigate(
-                            `/${el.category}/${el.id}`
+                          goToProduct(
+                            category.api,
+                            item.id
                           )
                         }
                       >
 
-                        <img
-                          src={el.img}
-                          className="card-img-top"
-                          style={{
-                            height: "350px",
-                            objectFit: "cover"
-                          }}
-                          alt={
-                            el.name ||
-                            el.category
-                          }
-                        />
+                        <div className="home-product-image-wrap">
 
-                        <div className="card-body">
+                          <img
+                            src={item.img}
+                            alt={
+                              item.name ||
+                              category.title
+                            }
+                            className="home-product-image"
+                            loading="lazy"
+                          />
 
-                          <p className="fw-bold mb-2">
-                            {el.name}
+                          {item.rating && (
+                            <span className="home-rating">
+                              {item.rating} ★
+                            </span>
+                          )}
+
+                        </div>
+
+
+                        <div className="home-product-info">
+
+                          <h4>
+                            {item.name}
+                          </h4>
+
+                          <p>
+                            {category.title}
                           </p>
 
-                          <p className="text-secondary text-uppercase mb-2">
-                            {el.category}
-                          </p>
 
-                          <div className="d-flex justify-content-between align-items-center">
+                          <div className="home-product-price-row">
 
-                            <h6 className="fw-bold mb-0">
-                              ₹{el.price}
-                            </h6>
+                            <strong>
+                              ₹{item.price}
+                            </strong>
 
-                            {el.rating && (
-                              <span className="badge bg-dark">
-                                {el.rating} ★
+                            {item.rating && (
+                              <span>
+                                {item.rating} ★
                               </span>
                             )}
 
                           </div>
 
+
                           <button
                             type="button"
-                            className="btn btn-dark w-100 mt-3"
                             onClick={(e) => {
                               e.stopPropagation();
 
-                              navigate(
-                                `/${el.category}/${el.id}`
+                              goToProduct(
+                                category.api,
+                                item.id
                               );
                             }}
                           >
@@ -204,190 +340,104 @@ function Home() {
 
                         </div>
 
-                      </div>
+                      </article>
 
-                    </div>
+                    )
+                  )}
 
-                  )
-                )}
+                </div>
 
               </div>
+            );
+          })
 
-            </div>
-          );
-        })}
+        )}
+
+      </section>
+
+
+      <section className="home-video-section">
 
         <video
-          className="w-100 mb-4"
+          className="home-video"
           autoPlay
           muted
           loop
-          controls
           playsInline
-          style={{
-            height: "600px",
-            objectFit: "cover"
-          }}
+          controls
         >
+
           <source
             src="https://wrogn.com/cdn/shop/videos/c/vp/1aec96c21003479e8820ba118f08b7be/1aec96c21003479e8820ba118f08b7be.HD-720p-3.0Mbps-57504336.mp4?v=0"
             type="video/mp4"
           />
+
         </video>
 
-        <div className="container-fluid mt-4">
+      </section>
 
-          <div>
-            <h3>
-              TRENDING CATEGORIES
-            </h3>
-          </div>
 
-          <div className="row g-1">
+      <section className="trending-section">
 
-            <div
-              className="col-md-6"
-              onClick={() =>
-                navigate("/tshirt")
-              }
-              style={{
-                cursor: "pointer"
-              }}
-            >
+        <div className="trending-heading">
+          <h2>TRENDING CATEGORIES</h2>
+        </div>
 
-              <div className="position-relative overflow-hidden">
+
+        <div className="trending-grid">
+
+          {trendingCategories.map(
+            (item, index) => (
+
+              <div
+                className={
+                  index < 2
+                    ? "trending-card trending-wide"
+                    : "trending-card"
+                }
+                key={item.category}
+                onClick={() =>
+                  goToCategory(
+                    item.category
+                  )
+                }
+              >
 
                 <img
-                  src="https://wrogn.com/cdn/shop/files/T-SHIRTS_copy._e2be4c54-1cd1-421d-bdbe-60ffbd6deefd.jpg?v=1774011417&width=720"
-                  alt="T-Shirt"
-                  className="w-100 d-block"
-                  style={{
-                    height: "350px",
-                    objectFit: "cover"
-                  }}
+                  src={item.image}
+                  alt={item.title}
+                  loading="lazy"
                 />
+
+                <div className="trending-overlay">
+
+                  <h3>
+                    {item.title}
+                  </h3>
+
+                  <span>
+                    SHOP NOW →
+                  </span>
+
+                </div>
 
               </div>
 
-            </div>
-
-            <div
-              className="col-md-6"
-              onClick={() =>
-                navigate("/shirt")
-              }
-              style={{
-                cursor: "pointer"
-              }}
-            >
-
-              <div className="position-relative overflow-hidden">
-
-                <img
-                  src="https://wrogn.com/cdn/shop/files/SHIRTS_copy..jpg?v=1774015803&width=720"
-                  alt="Shirt"
-                  className="w-100 d-block"
-                  style={{
-                    height: "350px",
-                    objectFit: "cover"
-                  }}
-                />
-
-              </div>
-
-            </div>
-
-          </div>
-
-          <div className="row pt-1 px-1 g-1">
-
-            <div
-              className="col-md-4"
-              onClick={() =>
-                navigate("/shoes")
-              }
-              style={{
-                cursor: "pointer"
-              }}
-            >
-
-              <div className="position-relative overflow-hidden">
-
-                <img
-                  src="https://wrogn.com/cdn/shop/files/FOOTWEAR_1_copy..jpg?v=1774016005&width=720"
-                  alt="Shoes"
-                  className="w-100 d-block"
-                  style={{
-                    height: "500px",
-                    objectFit: "cover"
-                  }}
-                />
-
-              </div>
-
-            </div>
-
-            <div
-              className="col-md-4"
-              onClick={() =>
-                navigate("/polo-shirt")
-              }
-              style={{
-                cursor: "pointer"
-              }}
-            >
-
-              <div className="position-relative overflow-hidden">
-
-                <img
-                  src="https://wrogn.com/cdn/shop/files/POLO_00cc7cbf-b0f7-4d1b-ac2e-0f3c897cd728.jpg?v=1774015943&width=720"
-                  alt="Polos"
-                  className="w-100 d-block"
-                  style={{
-                    height: "500px",
-                    objectFit: "cover"
-                  }}
-                />
-
-              </div>
-
-            </div>
-
-            <div
-              className="col-md-4"
-              onClick={() =>
-                navigate("/pent")
-              }
-              style={{
-                cursor: "pointer"
-              }}
-            >
-
-              <div className="position-relative overflow-hidden">
-
-                <img
-                  src="https://wrogn.com/cdn/shop/files/JEANS_copy..jpg?v=1774016034&width=720"
-                  alt="Pants"
-                  className="w-100 d-block"
-                  style={{
-                    height: "500px",
-                    objectFit: "cover"
-                  }}
-                />
-
-              </div>
-
-            </div>
-
-          </div>
+            )
+          )}
 
         </div>
 
-        <SeasonTopPicks />
+      </section>
 
-      </div>
-    </>
+
+      <section className="season-section">
+        <SeasonTopPicks />
+      </section>
+
+    </main>
   );
 }
 
 export default Home;
+

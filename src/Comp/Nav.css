@@ -1,0 +1,576 @@
+.offer-bar {
+  width: 100%;
+  overflow: hidden;
+}
+
+.offer-text {
+  white-space: nowrap;
+  text-align: center;
+  padding: 7px 0;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.navbar {
+  min-height: 70px;
+  z-index: 1000;
+}
+
+.navbar-brand img {
+  display: block;
+}
+
+.navbar-nav {
+  gap: 8px;
+}
+
+.nav-link {
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.dropdown-menu {
+  border: 0;
+  border-radius: 8px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  padding: 8px;
+}
+
+.dropdown-item {
+  font-size: 13px;
+  font-weight: 500;
+  padding: 9px 14px;
+  border-radius: 5px;
+}
+
+.dropdown-item:hover {
+  background: #f2f2f2;
+  color: #111;
+}
+
+/* =========================
+   SEARCH
+========================= */
+
+.desktop-search-wrapper,
+.mobile-search-wrapper {
+  position: relative;
+}
+
+.search-dropdown {
+  position: absolute;
+  top: 45px;
+  right: 0;
+  width: 360px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.18);
+  border: 1px solid #eee;
+  z-index: 2000;
+}
+
+.search-dropdown .form-control {
+  height: 44px;
+  border-radius: 7px 0 0 7px;
+  border-color: #ddd;
+  box-shadow: none;
+}
+
+.search-dropdown .form-control:focus {
+  border-color: #111;
+  box-shadow: none;
+}
+
+.search-dropdown .btn {
+  height: 44px;
+  border-radius: 0 7px 7px 0;
+}
+
+/* =========================
+   SUGGESTIONS
+========================= */
+
+.suggestion-list {
+  margin-top: 12px;
+  border-top: 1px solid #eee;
+  padding-top: 8px;
+}
+
+.suggestion-heading {
+  font-size: 11px;
+  font-weight: 700;
+  color: #888;
+  letter-spacing: 1px;
+  padding: 6px 8px 8px;
+}
+
+.suggestion-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 0;
+  background: #fff;
+  padding: 10px 8px;
+  border-radius: 8px;
+  text-align: left;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.suggestion-item:hover {
+  background: #f5f5f5;
+  transform: translateX(3px);
+}
+
+.suggestion-icon {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  border-radius: 50%;
+  background: #f1f1f1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: #333;
+  transition: all 0.2s ease;
+}
+
+.suggestion-item:hover .suggestion-icon {
+  background: #111;
+  color: #fff;
+}
+
+.suggestion-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.suggestion-content strong {
+  font-size: 13px;
+  color: #111;
+}
+
+.suggestion-content small {
+  font-size: 11px;
+  color: #888;
+}
+
+.suggestion-arrow {
+  margin-left: auto;
+  font-size: 13px;
+  color: #888;
+  transition: transform 0.2s ease;
+}
+
+.suggestion-item:hover .suggestion-arrow {
+  transform: translateX(3px);
+  color: #111;
+}
+
+.no-suggestion {
+  text-align: center;
+  padding: 18px 10px 10px;
+  color: #777;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 13px;
+}
+
+.no-suggestion i {
+  font-size: 20px;
+}
+
+/* =========================
+   MOBILE ACTIONS
+========================= */
+
+.mobile-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.mobile-action-button {
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.mobile-action-button:hover {
+  background: #f5f5f5;
+}
+
+.mobile-action-button i {
+  font-size: 18px;
+}
+
+.mobile-menu-icon {
+  display: block;
+  font-size: 27px;
+  line-height: 1;
+}
+
+/* =========================
+   MOBILE SEARCH
+========================= */
+
+.mobile-search-wrapper {
+  position: relative;
+}
+
+.mobile-search-dropdown {
+  position: fixed;
+  top: 70px;
+  right: 10px;
+  width: min(350px, calc(100vw - 20px));
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.18);
+  z-index: 2000;
+}
+
+/* Search Box */
+
+.mobile-search-box {
+  width: 100%;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.mobile-search-input {
+  flex: 1;
+  min-width: 0;
+  height: 34px;
+  border: 0;
+  outline: none;
+  padding: 0 8px;
+  font-size: 11px;
+  color: #111;
+}
+
+.mobile-search-input::placeholder {
+  color: #999;
+  font-size: 10px;
+}
+
+/* Search Button */
+
+.mobile-search-submit {
+  width: 34px;
+  height: 34px;
+  border: 0;
+  background: #111;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  font-size: 11px;
+}
+
+.mobile-search-submit:hover {
+  background: #333;
+}
+
+/* X Button */
+
+.mobile-search-close {
+  width: 32px;
+  height: 34px;
+  border: 0;
+  background: #fff;
+  color: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  font-size: 11px;
+}
+
+.mobile-search-close:hover {
+  background: #f2f2f2;
+}
+
+/* Mobile Search Suggestions */
+
+.mobile-search-dropdown .suggestion-list {
+  margin-top: 7px;
+  padding-top: 5px;
+}
+
+.mobile-search-dropdown .suggestion-heading {
+  font-size: 8px;
+  padding: 5px 5px 4px;
+}
+
+.mobile-search-dropdown .suggestion-item {
+  min-height: 38px;
+  padding: 5px;
+  gap: 7px;
+}
+
+.mobile-search-dropdown .suggestion-icon {
+  width: 25px;
+  height: 25px;
+  min-width: 25px;
+  font-size: 9px;
+}
+
+.mobile-search-dropdown .suggestion-content {
+  gap: 1px;
+}
+
+.mobile-search-dropdown .suggestion-content strong {
+  font-size: 9px;
+}
+
+.mobile-search-dropdown .suggestion-content small {
+  font-size: 7px;
+}
+
+.mobile-search-dropdown .suggestion-arrow {
+  font-size: 9px;
+}
+
+.mobile-search-dropdown .no-suggestion {
+  padding: 10px 5px;
+  font-size: 9px;
+}
+
+.mobile-search-dropdown .no-suggestion i {
+  font-size: 15px;
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 991.98px) {
+
+  .navbar {
+    min-height: 65px;
+  }
+
+  .navbar-brand img {
+    width: 45px;
+    height: 45px;
+  }
+
+  .mobile-search-dropdown {
+    top: 65px;
+  }
+
+  .navbar-collapse {
+    margin-top: 8px;
+    padding: 10px 0 15px;
+  }
+
+  .navbar-nav {
+    gap: 0;
+  }
+
+  .nav-link {
+    padding: 10px 8px;
+  }
+
+  .dropdown-menu {
+    box-shadow: none;
+    border: 1px solid #eee;
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 576px) {
+
+  .offer-text {
+    font-size: 10px;
+    padding: 5px 0;
+  }
+
+  .navbar {
+    min-height: 58px;
+  }
+
+  .navbar-brand img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .mobile-actions {
+    gap: 0;
+  }
+
+  .mobile-action-button {
+    width: 33px;
+    height: 33px;
+  }
+
+  .mobile-action-button i {
+    font-size: 16px;
+  }
+
+  .mobile-menu-icon {
+    font-size: 22px;
+  }
+
+  /* Compact Search */
+
+  .mobile-search-dropdown {
+    top: 58px;
+    right: 5px;
+    width: calc(100vw - 10px);
+    border-radius: 8px;
+    padding: 8px;
+  }
+
+  .mobile-search-box {
+    height: 34px;
+    border-radius: 5px;
+  }
+
+  .mobile-search-input {
+    height: 32px;
+    font-size: 10px;
+    padding: 0 7px;
+  }
+
+  .mobile-search-input::placeholder {
+    font-size: 9px;
+  }
+
+  .mobile-search-submit {
+    width: 30px;
+    height: 32px;
+    font-size: 10px;
+  }
+
+  .mobile-search-close {
+    width: 29px;
+    height: 32px;
+    font-size: 10px;
+  }
+
+  /* Compact Suggestions */
+
+  .mobile-search-dropdown .suggestion-list {
+    margin-top: 6px;
+  }
+
+  .mobile-search-dropdown .suggestion-heading {
+    font-size: 8px;
+    padding: 5px 4px 3px;
+  }
+
+  .mobile-search-dropdown .suggestion-item {
+    min-height: 36px;
+    padding: 4px;
+  }
+
+  .mobile-search-dropdown .suggestion-icon {
+    width: 23px;
+    height: 23px;
+    min-width: 23px;
+    font-size: 8px;
+  }
+
+  .mobile-search-dropdown .suggestion-content strong {
+    font-size: 8px;
+  }
+
+  .mobile-search-dropdown .suggestion-content small {
+    font-size: 7px;
+  }
+
+  .mobile-search-dropdown .suggestion-arrow {
+    font-size: 8px;
+  }
+}
+
+/* =========================
+   VERY SMALL MOBILE
+========================= */
+
+@media (max-width: 380px) {
+
+  .offer-text {
+    font-size: 9px;
+  }
+
+  .navbar {
+    min-height: 55px;
+  }
+
+  .navbar-brand img {
+    width: 38px;
+    height: 38px;
+  }
+
+  .mobile-action-button {
+    width: 31px;
+    height: 31px;
+  }
+
+  .mobile-action-button i {
+    font-size: 15px;
+  }
+
+  .mobile-menu-icon {
+    font-size: 20px;
+  }
+
+  .mobile-search-dropdown {
+    top: 55px;
+    right: 4px;
+    width: calc(100vw - 8px);
+    padding: 7px;
+  }
+
+  .mobile-search-box {
+    height: 32px;
+  }
+
+  .mobile-search-input {
+    height: 30px;
+    font-size: 9px;
+  }
+
+  .mobile-search-input::placeholder {
+    font-size: 8px;
+  }
+
+  .mobile-search-submit {
+    width: 28px;
+    height: 30px;
+  }
+
+  .mobile-search-close {
+    width: 27px;
+    height: 30px;
+  }
+}
